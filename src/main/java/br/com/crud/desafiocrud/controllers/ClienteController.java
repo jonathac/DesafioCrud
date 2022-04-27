@@ -1,12 +1,16 @@
 package br.com.crud.desafiocrud.controllers;
 
+import br.com.crud.desafiocrud.dto.NewClienteDTO;
+import br.com.crud.desafiocrud.dto.UpdateClienteDto;
 import br.com.crud.desafiocrud.models.ClienteModel;
 import br.com.crud.desafiocrud.services.ClienteService;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,8 @@ public class ClienteController {
 
     //CREATE
     @PostMapping()
-    public ResponseEntity<ClienteModel> create(@RequestBody ClienteModel clienteModel) {
+    public ResponseEntity<ClienteModel> create(@Valid @RequestBody NewClienteDTO clienteDto) {
+        ClienteModel clienteModel = clienteService.fromNewDto(clienteDto);
         clienteService.create(clienteModel);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clienteModel.getIdCliente()).toUri();
         return ResponseEntity.created(uri).build();
@@ -49,13 +54,13 @@ public class ClienteController {
 
     //UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ClienteModel cliente) {
-        //Optional<ClienteModel> clienteModel = clienteService.read(id);
+    public ResponseEntity<?> update(@PathVariable Integer id,@Valid @RequestBody UpdateClienteDto updateClienteDto) {
+        ClienteModel clienteModel = clienteService.fromUpdateDto(updateClienteDto);
         if (clienteService.read(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        cliente.setIdCliente(id);
-        clienteService.update(cliente);
+        clienteModel.setIdCliente(id);
+        clienteService.update(clienteModel);
         return ResponseEntity.ok().build();
     }
 

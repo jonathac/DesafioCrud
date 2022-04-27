@@ -1,47 +1,33 @@
-package br.com.crud.desafiocrud.models;
+package br.com.crud.desafiocrud.dto;
 
+import br.com.crud.desafiocrud.services.validation.ClienteUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@Entity
-@Table(name = "TB_CLIENTE")
-public class ClienteModel {
+@ClienteUpdate
+public class UpdateClienteDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCliente;
-    private String cpf;
+    @NotBlank(message = "Preenchimento obrigatorio")
+    @Length(max = 120,message = "Quantidade de caracteres deve ser no maximo 120")
     private String nome;
+
+    @NotBlank(message = "Preenchimento obrigatorio")
+    @Email
     private String email;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataNascimento;
 
-    public ClienteModel() {
-    }
+    public UpdateClienteDto(){}
 
-    public ClienteModel(String cpf, String nome, String email, Date dataNascimento) {
-        this.cpf = cpf;
+    public UpdateClienteDto(String nome, String email, Date dataNascimento){
         this.nome = nome;
         this.email = email;
         this.dataNascimento = dataNascimento;
-    }
-
-    public Integer getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getNome() {
