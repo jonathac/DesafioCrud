@@ -7,13 +7,14 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 
 @ClienteInsert
 public class NewClienteDTO {
 
-    //@Pattern(regexp = "[a-z]") - pesquisar regex para validação
+    //@Pattern(regexp = "[a-z]") //pesquisar regex para validação
     @NotBlank(message = "Preenchimento obrigatorio")
     @Length(max = 120,message = "Quantidade de caracteres deve ser no maximo 120")
     private String nome;

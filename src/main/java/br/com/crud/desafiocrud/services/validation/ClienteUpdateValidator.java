@@ -38,7 +38,7 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
         if (hoje.get(Calendar.MONTH) < dataNascimento.get(Calendar.MONTH)) {
             idade--;
         } else {
-            if (hoje.get(Calendar.MONTH) == dataNascimento.get(Calendar.MONTH) && hoje.get(Calendar.DAY_OF_MONTH) < dataNascimento.get(Calendar.DAY_OF_MONTH)) {
+            if (hoje.get(Calendar.MONTH) == dataNascimento.get(Calendar.MONTH) && hoje.get(Calendar.DAY_OF_MONTH) <= dataNascimento.get(Calendar.DAY_OF_MONTH)) {
                 idade--;
             }
         }

@@ -14,6 +14,8 @@ public class ClienteModel {
     private Integer idCliente;
     private String cpf;
     private String nome;
+
+    @Column(unique = true)
     private String email;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataNascimento;

@@ -2,6 +2,7 @@ package br.com.crud.desafiocrud.controllers.exception;
 
 import br.com.crud.desafiocrud.services.exception.DataIntegrityException;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -38,6 +39,11 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> validation(DataIntegrityViolationException e, HttpServletRequest request) {
 
+        ValidationError err = new ValidationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Erro no Servidor", System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+    }
 
 }
