@@ -41,7 +41,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<?> read(@PathVariable Integer id) {
         Optional<ClienteModel> clienteModel = clienteService.read(id);
-        if (clienteModel.isEmpty()) {
+        if (!clienteModel.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(clienteModel);
@@ -61,7 +61,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id,@Valid @RequestBody UpdateClienteDto updateClienteDto) {
         ClienteModel clienteModel = clienteService.fromUpdateDto(updateClienteDto);
-        if (clienteService.read(id).isEmpty()) {
+        if (!clienteService.read(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
         clienteModel.setIdCliente(id);
@@ -73,7 +73,7 @@ public class ClienteController {
     @ApiOperation("Apagar Cliente por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        if (clienteService.read(id).isEmpty()) {
+        if (!clienteService.read(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
         clienteService.delete(id);
