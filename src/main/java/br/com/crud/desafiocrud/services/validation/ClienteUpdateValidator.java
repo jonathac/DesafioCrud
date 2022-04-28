@@ -13,6 +13,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, UpdateClienteDto> {
 
@@ -47,6 +48,14 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 
         if (idade < 18){
             erros.add(new FieldMessage("dataNascimento", "Insira idade maior que 18 anos"));
+        }
+
+        String[] splitNome = objDto.getNome().toUpperCase(Locale.ROOT).split("\\s");
+
+        for (int i = 0; splitNome.length > i; i++) {
+            if (!splitNome[i].matches("[A-ZÀ-Ÿ]*")) {
+                erros.add(new FieldMessage("nome", "ERRO NO NOME"));
+            }
         }
 
         for (FieldMessage e : erros) {

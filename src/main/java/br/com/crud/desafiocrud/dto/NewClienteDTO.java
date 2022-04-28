@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -14,17 +13,16 @@ import java.util.Date;
 @ClienteInsert
 public class NewClienteDTO {
 
-    //@Pattern(regexp = "[a-z]") //pesquisar regex para validação
     @NotBlank(message = "Preenchimento obrigatorio")
-    @Length(max = 120,message = "Quantidade de caracteres deve ser no maximo 120")
+    @Length(max = 120, message = "Quantidade de caracteres deve ser no maximo 120")
     private String nome;
 
     @NotBlank(message = "Preenchimento obrigatorio")
     @CPF
     private String cpf;
 
+    @Pattern(regexp = "^([\\w\\-]+\\.)*[\\w\\- ]+@([\\w\\- ]+\\.)+([\\w\\-]{2,3})$", message = "E-mail inválido!")
     @NotBlank(message = "Preenchimento obrigatorio")
-    @Email
     private String email;
 
     @JsonFormat(pattern = "dd/MM/yyyy")

@@ -5,15 +5,14 @@ import br.com.crud.desafiocrud.controllers.exception.FieldMessage;
 import br.com.crud.desafiocrud.dto.NewClienteDTO;
 import br.com.crud.desafiocrud.models.ClienteModel;
 import br.com.crud.desafiocrud.repositories.ClienteRepository;
-import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, NewClienteDTO> {
 
@@ -45,7 +44,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 
         List<FieldMessage> erros = new ArrayList<>();
 
-        if (idade < 18){
+        if (idade < 18) {
             erros.add(new FieldMessage("dataNascimento", "Insira idade maior que 18 anos"));
         }
 
@@ -57,6 +56,14 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
         aux = repo.findByCpf(objDto.getCpf());
         if (aux != null) {
             erros.add(new FieldMessage("cpf", "CPF já existente"));
+        }
+
+        String[] splitNome = objDto.getNome().toUpperCase(Locale.ROOT).split("\\s");
+
+        for (int i = 0; splitNome.length > i; i++) {
+            if (!splitNome[i].matches("[A-ZÀ-Ÿ]*")) {
+                erros.add(new FieldMessage("nome", "ERRO NO NOME"));
+            }
         }
 
         for (FieldMessage e : erros) {
