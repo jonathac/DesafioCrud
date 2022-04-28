@@ -4,6 +4,7 @@ import br.com.crud.desafiocrud.dto.NewClienteDTO;
 import br.com.crud.desafiocrud.dto.UpdateClienteDto;
 import br.com.crud.desafiocrud.models.ClienteModel;
 import br.com.crud.desafiocrud.services.ClienteService;
+import io.swagger.annotations.ApiOperation;
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     //CREATE
+    @ApiOperation("Cadastrar Cliente")
     @PostMapping()
     public ResponseEntity<ClienteModel> create(@Valid @RequestBody NewClienteDTO clienteDto) {
         ClienteModel clienteModel = clienteService.fromNewDto(clienteDto);
@@ -35,6 +37,7 @@ public class ClienteController {
     }
 
     //READ ID
+    @ApiOperation("Buscar Cliente por ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> read(@PathVariable Integer id) {
         Optional<ClienteModel> clienteModel = clienteService.read(id);
@@ -45,6 +48,7 @@ public class ClienteController {
     }
 
     //READ ALL
+    @ApiOperation("Buscar todos os clientes")
     @GetMapping()
     public ResponseEntity<List<ClienteModel>> readAll() {
         List<ClienteModel> list = new ArrayList();
@@ -53,6 +57,7 @@ public class ClienteController {
     }
 
     //UPDATE
+    @ApiOperation("Atualizar cliente por ID")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id,@Valid @RequestBody UpdateClienteDto updateClienteDto) {
         ClienteModel clienteModel = clienteService.fromUpdateDto(updateClienteDto);
@@ -65,6 +70,7 @@ public class ClienteController {
     }
 
     //DELETE
+    @ApiOperation("Apagar Cliente por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         if (clienteService.read(id).isEmpty()) {
