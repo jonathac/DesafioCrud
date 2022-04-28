@@ -25,13 +25,15 @@ public class NewClienteDTO {
     @NotBlank(message = "Preenchimento obrigatorio")
     private String email;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date dataNascimento;
+   // @JsonFormat(pattern = "dd/MM/yyyy")
+    //private Date dataNascimento;
+
+    private String dataNascimento;
 
     public NewClienteDTO() {
     }
 
-    public NewClienteDTO(String nome, String cpf, String email, Date dataNascimento) {
+    public NewClienteDTO(String nome, String cpf, String email, String dataNascimento) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -62,11 +64,11 @@ public class NewClienteDTO {
         this.email = email;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

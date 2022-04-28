@@ -7,6 +7,9 @@ import br.com.crud.desafiocrud.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,20 +59,36 @@ public class ClienteService {
 
     //CLIENTE FROM DTO
     public ClienteModel fromNewDto (NewClienteDTO clienteDto){
+        Date data = null;
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            data = formato.parse(clienteDto.getDataNascimento());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         ClienteModel clienteModel = new ClienteModel();
         clienteModel.setNome(clienteDto.getNome());
         clienteModel.setEmail(clienteDto.getEmail());
         clienteModel.setCpf(clienteDto.getCpf());
-        clienteModel.setDataNascimento(clienteDto.getDataNascimento());
+        clienteModel.setDataNascimento(data);
         return clienteModel;
     }
 
     //UPDATE CLIENTEDTO
     public ClienteModel fromUpdateDto (UpdateClienteDto updateClienteDto){
+        Date data = null;
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            data = formato.parse(updateClienteDto.getDataNascimento());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         ClienteModel clienteModel = new ClienteModel();
         clienteModel.setNome(updateClienteDto.getNome());
         clienteModel.setEmail(updateClienteDto.getEmail());
-        clienteModel.setDataNascimento(updateClienteDto.getDataNascimento());
+        clienteModel.setDataNascimento(data);
         return clienteModel;
     }
 }

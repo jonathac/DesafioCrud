@@ -19,12 +19,14 @@ public class UpdateClienteDto {
     @NotBlank(message = "Preenchimento obrigatorio")
     private String email;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date dataNascimento;
+    // @JsonFormat(pattern = "dd/MM/yyyy")
+    //private Date dataNascimento;
+
+    private String dataNascimento;
 
     public UpdateClienteDto(){}
 
-    public UpdateClienteDto(String nome, String email, Date dataNascimento){
+    public UpdateClienteDto(String nome, String email, String dataNascimento){
         this.nome = nome;
         this.email = email;
         this.dataNascimento = dataNascimento;
@@ -46,11 +48,11 @@ public class UpdateClienteDto {
         this.email = email;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }
