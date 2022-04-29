@@ -1,12 +1,10 @@
 package br.com.crud.desafiocrud.dto;
 
 import br.com.crud.desafiocrud.services.validation.ClienteUpdate;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
 
 @ClienteUpdate
 public class UpdateClienteDto {
@@ -18,9 +16,6 @@ public class UpdateClienteDto {
     @Pattern(regexp = "^([\\w\\-]+\\.)*[\\w\\- ]+@([\\w\\- ]+\\.)+([\\w\\-]{2,3})$", message = "E-mail inválido!")
     @NotBlank(message = "Preenchimento obrigatorio")
     private String email;
-
-    // @JsonFormat(pattern = "dd/MM/yyyy")
-    //private Date dataNascimento;
 
     private String dataNascimento;
 

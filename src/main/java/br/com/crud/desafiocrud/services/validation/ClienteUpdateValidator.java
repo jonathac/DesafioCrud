@@ -37,7 +37,7 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
         String Dt = dataNascimento;
 
         //Se a data estiver completa
-        if (Dt.trim().length() == 10) {
+        if (Dt.trim().length() >=8 && Dt.trim().length()<= 10) {
 
             //quebra a string
             String [] splitData = Dt.split("/");
@@ -80,7 +80,8 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
         Calendar dataNascimento = Calendar.getInstance();
 
         try {
-            dataNascimento.setTime(formato.parse(objDto.getDataNascimento()));
+            if (objDto.getDataNascimento().matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4,4}")){
+                dataNascimento.setTime(formato.parse(objDto.getDataNascimento()));}
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -103,10 +104,12 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
         List<FieldMessage> erros = new ArrayList<>();
 
         //Validação de data e maior idade
-        if (!dataOk(objDto.getDataNascimento())) {
-            erros.add(new FieldMessage("dataNascimento", "Insira uma data válida"));
+        if (!objDto.getDataNascimento().matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4,4}")){
+            erros.add(new FieldMessage("dataNascimento", "Data com formato incorreto"));
         }
-        else if (idade < 18) {
+        else if (!dataOk(objDto.getDataNascimento())) {
+            erros.add(new FieldMessage("dataNascimento", "Insira uma data válida"));
+        } else if (idade < 18) {
             erros.add(new FieldMessage("dataNascimento", "Insira idade maior que 18 anos"));
         }
 

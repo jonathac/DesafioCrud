@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, NewClienteDTO> {
 
@@ -21,6 +23,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 
     @Override
     public void initialize(ClienteInsert ann) {
+        // TODO document why this method is empty
     }
 
     public boolean dataOk(String dataNascimento) {
@@ -28,32 +31,27 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
         Integer Dia, Mes;
         Integer Ano;
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        //String Dt = dateFormat.format(dataNascimento);
         String Dt = dataNascimento;
 
         //Se a data estiver completa
-        if (Dt.trim().length() == 10) {
+        if (Dt.trim().length() >=8 && Dt.trim().length()<= 10) {
 
             //quebra a string
-            String [] splitData = Dt.split("/");
+            String[] splitData = Dt.split("/");
 
             Dia = Integer.parseInt(splitData[0]);
             Mes = Integer.parseInt(splitData[1]);
             Ano = Integer.parseInt(splitData[2]);
 
-            System.out.println(Dia);
-            System.out.println(Mes);
-            System.out.println(Ano);
             //verifica variaveis
-            if(
-                    ( (Mes.equals(1) || Mes.equals(3) || Mes.equals(5) || Mes.equals(7) || Mes.equals(8) || Mes.equals(10) || Mes.equals(12)) && (Dia>=1 && Dia <=31))
+            if (
+                    ((Mes.equals(1) || Mes.equals(3) || Mes.equals(5) || Mes.equals(7) || Mes.equals(8) || Mes.equals(10) || Mes.equals(12)) && (Dia >= 1 && Dia <= 31))
                             ||
-                            ( (Mes.equals(4) || Mes.equals(6) || Mes.equals(9) || Mes.equals(11)) && (Dia>=1 && Dia <=30))
+                            ((Mes.equals(4) || Mes.equals(6) || Mes.equals(9) || Mes.equals(11)) && (Dia >= 1 && Dia <= 30))
                             ||
-                            ( (Mes.equals(2)) && (AnoBissexto(Ano)) && (Dia>=1 && Dia <=29))
+                            ((Mes.equals(2)) && (AnoBissexto(Ano)) && (Dia >= 1 && Dia <= 29))
                             ||
-                            ( (Mes.equals(2)) && !(AnoBissexto(Ano)) && (Dia>=1 && Dia <=28))
+                            ((Mes.equals(2)) && !(AnoBissexto(Ano)) && (Dia >= 1 && Dia <= 28))
             ) {
                 return true;
             } else {
@@ -72,7 +70,6 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
     @Override
     public boolean isValid(NewClienteDTO objDto, ConstraintValidatorContext context) {
 
-
         //Injeção de dependencia
         ClienteModel aux = new ClienteModel();
 
@@ -80,7 +77,8 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
         Calendar dataNascimento = Calendar.getInstance();
 
         try {
-            dataNascimento.setTime(formato.parse(objDto.getDataNascimento()));
+            if (objDto.getDataNascimento().matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4,4}")){
+            dataNascimento.setTime(formato.parse(objDto.getDataNascimento()));}
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -100,10 +98,12 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
         List<FieldMessage> erros = new ArrayList<>();
 
         //Validação de data e maior idade
-        if (!dataOk(objDto.getDataNascimento())) {
-            erros.add(new FieldMessage("dataNascimento", "Insira uma data válida"));
+        if (!objDto.getDataNascimento().matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4,4}")){
+            erros.add(new FieldMessage("dataNascimento", "Data com formato incorreto"));
         }
-         else if (idade < 18) {
+        else if (!dataOk(objDto.getDataNascimento())) {
+            erros.add(new FieldMessage("dataNascimento", "Insira uma data válida"));
+        } else if (idade < 18) {
             erros.add(new FieldMessage("dataNascimento", "Insira idade maior que 18 anos"));
         }
 
